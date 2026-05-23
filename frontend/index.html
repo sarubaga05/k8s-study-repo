@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vote App</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 50px; }
+        button { font-size: 20px; margin: 10px; padding: 10px 20px; cursor: pointer; }
+        .vote-btn { background-color: #4CAF50; color: white; border: none; }
+        .vote-btn:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>🐱 vs 🐶 Who is better?</h1>
+    <button class="vote-btn" onclick="vote('cat')">Vote for 🐱 CAT</button>
+    <button class="vote-btn" onclick="vote('dog')">Vote for 🐶 DOG</button>
+    <p id="message"></p>
+    <a href="/results">View Results →</a>
+
+    <script>
+        async function vote(choice) {
+            try {
+                const response = await fetch('/api/vote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ choice: choice })
+                });
+                const data = await response.json();
+                document.getElementById('message').innerText = `✅ Voted for ${choice}!`;
+                setTimeout(() => document.getElementById('message').innerText = '', 2000);
+            } catch (error) {
+                document.getElementById('message').innerText = '❌ Error voting';
+            }
+        }
+    </script>
+</body>
+</html>

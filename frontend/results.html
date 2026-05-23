@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vote Results</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 50px; }
+        .result { font-size: 24px; margin: 20px; }
+        .cat { color: orange; }
+        .dog { color: brown; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>📊 Current Results</h1>
+    <div class="result">
+        🐱 Cat: <span id="cat-count">0</span>
+    </div>
+    <div class="result">
+        🐶 Dog: <span id="dog-count">0</span>
+    </div>
+    <div class="result">
+        📈 Total votes: <span id="total-count">0</span>
+    </div>
+    <button onclick="location.reload()">Refresh</button>
+    <br><br>
+    <a href="/">← Back to vote</a>
+
+    <script>
+        async function loadResults() {
+            try {
+                const response = await fetch('/api/results');
+                const data = await response.json();
+                document.getElementById('cat-count').textContent = data.cat;
+                document.getElementById('dog-count').textContent = data.dog;
+                document.getElementById('total-count').textContent = data.total;
+            } catch (error) {
+                console.error('Error loading results:', error);
+            }
+        }
+        loadResults();
+        setInterval(loadResults, 5000);
+    </script>
+</body>
+</html>
